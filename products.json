@@ -96,6 +96,5 @@
       "createdAt": "2026-10-23T08:59:47.596Z",
       "id": "0jbGpIS4H48"
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }

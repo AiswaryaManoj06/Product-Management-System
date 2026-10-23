@@ -1,4 +1,26 @@
 {
-    "workbench.activityBar.location": "default",
-    "workbench.sideBar.location": "left"
+  "workbench.activityBar.location": "default",
+  "workbench.sideBar.location": "left",
+  "json.schemas": [
+    {
+      "fileMatch": ["/products.json"],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "$schema": {
+            "type": "string"
+          },
+          "products": {
+            "type": "array"
+          }
+        },
+        "additionalProperties": {
+          "oneOf": [
+            { "type": "array" },
+            { "type": "object" }
+          ]
+        }
+      }
+    }
+  ]
 }
