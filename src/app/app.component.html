@@ -1,0 +1,82 @@
+<div class="app-layout">
+  <!-- Top Navigation Header -->
+  <header class="navbar-wrapper">
+    <div class="navbar container">
+      <!-- Brand Logo -->
+      <a routerLink="/" class="brand-logo" id="nav-brand-logo">
+        <div class="logo-mark">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Product<span class="gradient-accent">Flow</span></span>
+          <span class="brand-sub">Inventory Suite</span>
+        </div>
+      </a>
+
+      <!-- Primary Navigation Links -->
+      <nav class="nav-links">
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+          id="nav-link-products"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Products
+        </a>
+
+        <a
+          routerLink="/products/create"
+          routerLinkActive="active"
+          class="nav-link"
+          id="nav-link-create"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Add Product
+        </a>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="nav-end">
+        <div class="api-pill" title="Connected to JSON Server (port 3000)">
+          <span class="status-dot"></span>
+          <span class="api-label">API: JSON Server :3000</span>
+        </div>
+
+        <a
+          routerLink="/products/create"
+          class="btn btn-primary btn-sm header-cta"
+          id="btn-header-add"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          New Item
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="main-body container">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Modern Footer -->
+  <footer class="app-footer">
+    <div class="footer-container container">
+      <div class="footer-left">
+        <p>&copy; {{ currentYear }} <strong>ProductFlow</strong>. Angular CRUD Product Management System.</p>
+        <span class="footer-tag">Reactive Forms &bull; JSON Server &bull; SweetAlert2</span>
+      </div>
+      <div class="footer-right">
+        <a routerLink="/" class="footer-link">Home</a>
+        <span class="dot">&bull;</span>
+        <a routerLink="/products/create" class="footer-link">Create Product</a>
+      </div>
+    </div>
+  </footer>
+</div>

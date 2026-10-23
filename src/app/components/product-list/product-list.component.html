@@ -1,0 +1,277 @@
+<div class="product-page">
+  <!-- Top Metrics Overview -->
+  <section class="metrics-grid">
+    <div class="metric-card glass-panel">
+      <div class="metric-icon metric-purple">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      </div>
+      <div class="metric-data">
+        <span class="metric-label">Total Products</span>
+        <h3 class="metric-value">{{ totalProducts }}</h3>
+      </div>
+    </div>
+
+    <div class="metric-card glass-panel">
+      <div class="metric-icon metric-cyan">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      </div>
+      <div class="metric-data">
+        <span class="metric-label">Inventory Value</span>
+        <h3 class="metric-value">${{ totalInventoryValue | number:'1.2-2' }}</h3>
+      </div>
+    </div>
+
+    <div class="metric-card glass-panel">
+      <div class="metric-icon metric-amber">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      </div>
+      <div class="metric-data">
+        <span class="metric-label">Low Stock Alert (&lt;15)</span>
+        <h3 class="metric-value">{{ lowStockCount }}</h3>
+      </div>
+    </div>
+
+    <div class="metric-card glass-panel action-card" (click)="navigateToCreate()">
+      <div class="metric-icon metric-indigo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </div>
+      <div class="metric-data">
+        <span class="metric-label">Quick Action</span>
+        <h3 class="metric-value link-text">+ Add Product</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter & Action Bar -->
+  <section class="toolbar-section glass-panel">
+    <div class="search-box">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input
+        type="text"
+        placeholder="Search products by name, category, SKU..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        class="search-input"
+        id="product-search-input"
+      />
+      <button *ngIf="searchTerm" (click)="searchTerm = ''; onSearchChange()" class="clear-btn" aria-label="Clear search">✕</button>
+    </div>
+
+    <div class="filter-controls">
+      <!-- Category Filter -->
+      <div class="select-wrapper">
+        <select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)" class="styled-select" id="category-select">
+          <option value="ALL">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <!-- Sort Filter -->
+      <div class="select-wrapper">
+        <select [(ngModel)]="sortBy" (ngModelChange)="onSortChange()" class="styled-select" id="sort-select">
+          <option value="name-asc">Name: A to Z</option>
+          <option value="name-desc">Name: Z to A</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="stock-desc">Stock: High to Low</option>
+        </select>
+      </div>
+
+      <!-- View Toggle -->
+      <div class="view-toggle">
+        <button
+          class="toggle-btn"
+          [class.active]="viewMode === 'grid'"
+          (click)="setViewMode('grid')"
+          title="Grid View"
+          id="btn-view-grid"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        </button>
+        <button
+          class="toggle-btn"
+          [class.active]="viewMode === 'table'"
+          (click)="setViewMode('table')"
+          title="Table View"
+          id="btn-view-table"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Create Product Navigation Button -->
+      <button class="btn btn-primary" (click)="navigateToCreate()" id="btn-create-product">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Create Product
+      </button>
+    </div>
+  </section>
+
+  <!-- Error Alert Banner -->
+  <div *ngIf="errorMessage" class="error-banner glass-panel">
+    <div class="error-content">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      <div>
+        <h4>API Connection Notice</h4>
+        <p>{{ errorMessage }}</p>
+      </div>
+    </div>
+    <button class="btn btn-secondary" (click)="loadProducts()">Retry Connection</button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading inventory from JSON Server...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredProducts.length === 0" class="empty-state glass-panel">
+    <div class="empty-icon">📦</div>
+    <h3>No Products Found</h3>
+    <p *ngIf="searchTerm || selectedCategory !== 'ALL'">
+      No products match your search criteria. Try resetting the filters.
+    </p>
+    <p *ngIf="!searchTerm && selectedCategory === 'ALL'">
+      Your inventory is currently empty. Get started by adding your first product!
+    </p>
+    <div class="empty-actions">
+      <button *ngIf="searchTerm || selectedCategory !== 'ALL'" (click)="searchTerm = ''; selectedCategory = 'ALL'; applyFilters()" class="btn btn-secondary">
+        Reset Filters
+      </button>
+      <button class="btn btn-primary" (click)="navigateToCreate()">
+        + Add New Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Product Grid View -->
+  <div *ngIf="!isLoading && filteredProducts.length > 0 && viewMode === 'grid'" class="products-grid">
+    <div *ngFor="let product of filteredProducts" class="product-card glass-panel">
+      <!-- Image & Badges Container -->
+      <div class="card-image-wrapper">
+        <img
+          [src]="product.imageUrl || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&q=80'"
+          [alt]="product.name"
+          class="product-image"
+          loading="lazy"
+        />
+        <span class="badge badge-primary category-badge">{{ product.category }}</span>
+        <span
+          class="badge stock-badge"
+          [ngClass]="{
+            'badge-success': (product.stock || 0) >= 15,
+            'badge-warning': (product.stock || 0) > 0 && (product.stock || 0) < 15,
+            'badge-danger': (product.stock || 0) === 0
+          }"
+        >
+          {{ (product.stock || 0) > 0 ? (product.stock + ' in stock') : 'Out of Stock' }}
+        </span>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-content">
+        <div class="card-header-row">
+          <h3 class="product-title" [title]="product.name">{{ product.name }}</h3>
+          <div class="product-price">${{ product.price | number:'1.2-2' }}</div>
+        </div>
+
+        <p class="product-desc">{{ product.description }}</p>
+
+        <div class="card-meta">
+          <span *ngIf="product.sku" class="sku-tag">SKU: {{ product.sku }}</span>
+          <span *ngIf="product.rating" class="rating-tag">⭐ {{ product.rating }}</span>
+        </div>
+
+        <!-- Action Buttons: View, Edit, Delete -->
+        <div class="card-actions">
+          <button
+            class="btn btn-outline-primary btn-view"
+            (click)="navigateToView(product.id)"
+            [id]="'btn-view-' + product.id"
+            title="View Details"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            View
+          </button>
+
+          <button
+            class="btn btn-secondary btn-edit"
+            (click)="navigateToEdit(product.id)"
+            [id]="'btn-edit-' + product.id"
+            title="Edit Product"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            Edit
+          </button>
+
+          <button
+            class="btn btn-danger btn-icon"
+            (click)="onDelete(product)"
+            [id]="'btn-delete-' + product.id"
+            title="Delete Product"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Table View -->
+  <div *ngIf="!isLoading && filteredProducts.length > 0 && viewMode === 'table'" class="table-container glass-panel">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>SKU</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of filteredProducts">
+          <td class="product-cell">
+            <img
+              [src]="product.imageUrl || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=100&q=80'"
+              [alt]="product.name"
+              class="table-thumb"
+            />
+            <div class="product-info">
+              <span class="product-name">{{ product.name }}</span>
+              <span class="product-subtext">{{ product.description | slice:0:60 }}...</span>
+            </div>
+          </td>
+          <td><span class="badge badge-primary">{{ product.category }}</span></td>
+          <td class="price-cell">${{ product.price | number:'1.2-2' }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'badge-success': (product.stock || 0) >= 15,
+                'badge-warning': (product.stock || 0) > 0 && (product.stock || 0) < 15,
+                'badge-danger': (product.stock || 0) === 0
+              }"
+            >
+              {{ product.stock }} units
+            </span>
+          </td>
+          <td><code class="sku-code">{{ product.sku || 'N/A' }}</code></td>
+          <td class="actions-cell text-right">
+            <button class="btn btn-outline-primary btn-sm" (click)="navigateToView(product.id)" title="View Details">
+              View
+            </button>
+            <button class="btn btn-secondary btn-sm" (click)="navigateToEdit(product.id)" title="Edit">
+              Edit
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="onDelete(product)" title="Delete">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

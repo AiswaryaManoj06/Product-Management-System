@@ -1,0 +1,101 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Sony WH-1000XM5 Wireless Headphones",
+      "description": "Industry-leading noise canceling headphones with dual processors, 8 microphones, and ultra-comfortable lightweight design.",
+      "price": 399.99,
+      "category": "Audio",
+      "stock": 24,
+      "imageUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+      "rating": 4.8,
+      "sku": "SNY-WH1000XM5",
+      "createdAt": "2026-01-15T08:30:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Apple Watch Ultra 2",
+      "description": "The most rugged and capable Apple Watch. Engineered for outdoor adventures and endurance athletes with 49mm titanium case.",
+      "price": 799,
+      "category": "Wearables",
+      "stock": 15,
+      "imageUrl": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
+      "rating": 4.9,
+      "sku": "APL-WULTRA2",
+      "createdAt": "2026-02-10T11:20:00Z"
+    },
+    {
+      "id": "3",
+      "name": "Logitech MX Master 3S Mouse",
+      "description": "Performance wireless mouse featuring Quiet Clicks, 8K DPI track-on-glass sensor, and ergonomic sculpted thumb rest.",
+      "price": 99.99,
+      "category": "Accessories",
+      "stock": 58,
+      "imageUrl": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800&q=80",
+      "rating": 4.7,
+      "sku": "LOG-MXM3S",
+      "createdAt": "2026-02-28T14:45:00Z"
+    },
+    {
+      "id": "4",
+      "name": "Keychron Q1 Pro Mechanical Keyboard",
+      "description": "Custom wireless mechanical keyboard with full aluminum CNC body, hot-swappable switches, and double-gasket acoustic design.",
+      "price": 199.5,
+      "category": "Accessories",
+      "stock": 32,
+      "imageUrl": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&q=80",
+      "rating": 4.6,
+      "sku": "KEY-Q1PRO",
+      "createdAt": "2026-03-05T09:15:00Z"
+    },
+    {
+      "id": "5",
+      "name": "Dell UltraSharp 32 4K USB-C Hub Monitor",
+      "description": "Brilliant IPS Black technology with 2000:1 contrast ratio, 98% DCI-P3 color gamut, and 90W USB-C power delivery.",
+      "price": 849.99,
+      "category": "Electronics",
+      "stock": 12,
+      "imageUrl": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&q=80",
+      "rating": 4.9,
+      "sku": "DEL-U3223QE",
+      "createdAt": "2026-03-12T16:00:00Z"
+    },
+    {
+      "id": "6",
+      "name": "Fujifilm X-T5 Mirrorless Camera",
+      "description": "Compact, lightweight camera body featuring a high-resolution 40.2MP X-Trans 5 HR sensor with 5-axis in-body image stabilization.",
+      "price": 1699,
+      "category": "Photography",
+      "stock": 8,
+      "imageUrl": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80",
+      "rating": 4.9,
+      "sku": "FUJ-XT5-BLK",
+      "createdAt": "2026-03-20T10:00:00Z"
+    },
+    {
+      "name": "Logitech MX Master 4",
+      "category": "Accessories",
+      "price": 129.99,
+      "stock": 50,
+      "sku": "LOG-MX4",
+      "imageUrl": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&q=80",
+      "description": "Advanced wireless mouse with ergonomic design.",
+      "rating": 5,
+      "createdAt": "2026-10-23T08:33:06.632Z",
+      "id": "dXL6N7pjBmM"
+    },
+    {
+      "name": "Test Mechanical Keyboard",
+      "category": "Accessories",
+      "price": 149.96,
+      "stock": 1,
+      "sku": "",
+      "imageUrl": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&q=80",
+      "description": "High-end mechanical keyboard with RGB backlighting.",
+      "rating": 5,
+      "createdAt": "2026-10-23T08:59:47.596Z",
+      "id": "0jbGpIS4H48"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

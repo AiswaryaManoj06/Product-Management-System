@@ -1,0 +1,202 @@
+<div class="form-page-container">
+  <!-- Top Navigation & Header -->
+  <div class="page-header">
+    <button class="btn btn-secondary back-btn" (click)="onCancel()" id="btn-back-to-products">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Back to Inventory
+    </button>
+    <div class="header-titles">
+      <h1 class="page-title">Add New Product</h1>
+      <p class="page-subtitle">Fill in the specifications below to register a new product in the catalog.</p>
+    </div>
+  </div>
+
+  <div class="content-split">
+    <!-- Reactive Form Section -->
+    <div class="form-card glass-panel">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Product Name -->
+        <div class="form-group">
+          <label class="form-label" for="product-name">Product Name *</label>
+          <input
+            id="product-name"
+            type="text"
+            class="form-control"
+            [class.is-invalid]="f['name'].touched && f['name'].invalid"
+            formControlName="name"
+            placeholder="e.g. Sony WH-1000XM5 Wireless Headphones"
+          />
+          <div *ngIf="f['name'].touched && f['name'].invalid" class="invalid-feedback">
+            <span *ngIf="f['name'].errors?.['required']">Product name is required.</span>
+            <span *ngIf="f['name'].errors?.['minlength']">Name must be at least 3 characters.</span>
+          </div>
+        </div>
+
+        <!-- Row: Category & Price -->
+        <div class="form-row">
+          <div class="form-group col-half">
+            <label class="form-label" for="product-category">Category *</label>
+            <select
+              id="product-category"
+              class="form-control styled-select"
+              [class.is-invalid]="f['category'].touched && f['category'].invalid"
+              formControlName="category"
+            >
+              <option value="" disabled selected>Select a category</option>
+              <option *ngFor="let cat of availableCategories" [value]="cat">{{ cat }}</option>
+            </select>
+            <div class="category-chips">
+              <button
+                type="button"
+                *ngFor="let cat of availableCategories"
+                class="chip-btn"
+                [class.active]="productForm.get('category')?.value === cat"
+                (click)="selectCategory(cat)"
+              >
+                {{ cat }}
+              </button>
+            </div>
+            <div *ngIf="f['category'].touched && f['category'].invalid" class="invalid-feedback">
+              <span>Category selection is required.</span>
+            </div>
+          </div>
+
+          <div class="form-group col-half">
+            <label class="form-label" for="product-price">Price ($ USD) *</label>
+            <input
+              id="product-price"
+              type="number"
+              step="0.01"
+              class="form-control"
+              [class.is-invalid]="f['price'].touched && f['price'].invalid"
+              formControlName="price"
+              placeholder="0.00"
+            />
+            <div *ngIf="f['price'].touched && f['price'].invalid" class="invalid-feedback">
+              <span *ngIf="f['price'].errors?.['required']">Price is required.</span>
+              <span *ngIf="f['price'].errors?.['min']">Price must be greater than $0.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row: Stock & SKU -->
+        <div class="form-row">
+          <div class="form-group col-half">
+            <label class="form-label" for="product-stock">Stock Units *</label>
+            <input
+              id="product-stock"
+              type="number"
+              min="0"
+              class="form-control"
+              [class.is-invalid]="f['stock'].touched && f['stock'].invalid"
+              formControlName="stock"
+              placeholder="e.g. 25"
+            />
+            <div *ngIf="f['stock'].touched && f['stock'].invalid" class="invalid-feedback">
+              <span *ngIf="f['stock'].errors?.['required']">Stock quantity is required.</span>
+              <span *ngIf="f['stock'].errors?.['min']">Stock cannot be negative.</span>
+            </div>
+          </div>
+
+          <div class="form-group col-half">
+            <label class="form-label" for="product-sku">SKU Code (Optional)</label>
+            <input
+              id="product-sku"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="f['sku'].touched && f['sku'].invalid"
+              formControlName="sku"
+              placeholder="e.g. SNY-WH1000-BLK"
+            />
+            <div *ngIf="f['sku'].touched && f['sku'].invalid" class="invalid-feedback">
+              <span>SKU must contain only letters, numbers, hyphens or underscores.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image URL -->
+        <div class="form-group">
+          <label class="form-label" for="product-image">Image URL</label>
+          <input
+            id="product-image"
+            type="url"
+            class="form-control"
+            formControlName="imageUrl"
+            placeholder="https://example.com/product-image.jpg"
+          />
+          <small class="helper-text">Leave blank to use an automated high-resolution placeholder.</small>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label class="form-label" for="product-desc">Description *</label>
+          <textarea
+            id="product-desc"
+            rows="4"
+            class="form-control text-area"
+            [class.is-invalid]="f['description'].touched && f['description'].invalid"
+            formControlName="description"
+            placeholder="Provide a comprehensive description of product specifications, build quality, and key features..."
+          ></textarea>
+          <div *ngIf="f['description'].touched && f['description'].invalid" class="invalid-feedback">
+            <span *ngIf="f['description'].errors?.['required']">Description is required.</span>
+            <span *ngIf="f['description'].errors?.['minlength']">Description must be at least 10 characters long.</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" id="btn-cancel-create">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isSubmitting"
+            id="btn-submit-create"
+          >
+            <span *ngIf="isSubmitting" class="spinner-sm"></span>
+            {{ isSubmitting ? 'Publishing Product...' : 'Create & Publish Product' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Live Preview Aside -->
+    <div class="preview-column">
+      <div class="preview-header">
+        <span class="preview-badge">Live Store Preview</span>
+      </div>
+
+      <div class="preview-card glass-panel">
+        <div class="preview-image-box">
+          <img [src]="currentImage" alt="Preview Image" class="preview-img" />
+          <span class="badge badge-primary preview-cat-badge">
+            {{ productForm.get('category')?.value || 'Category' }}
+          </span>
+          <span class="badge badge-success preview-stock-badge">
+            {{ productForm.get('stock')?.value || 0 }} in stock
+          </span>
+        </div>
+
+        <div class="preview-body">
+          <div class="preview-title-row">
+            <h4>{{ productForm.get('name')?.value || 'Product Title Appears Here' }}</h4>
+            <span class="preview-price">
+              ${{ (productForm.get('price')?.value || 0) | number:'1.2-2' }}
+            </span>
+          </div>
+
+          <p class="preview-desc">
+            {{ productForm.get('description')?.value || 'Your product description will render here dynamically as you type in the form.' }}
+          </p>
+
+          <div class="preview-meta">
+            <span class="sku-tag">SKU: {{ productForm.get('sku')?.value || 'AUTO-GENERATED' }}</span>
+            <span class="rating-tag">⭐ 5.0 (New)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,217 @@
+<div class="form-page-container">
+  <!-- Top Navigation & Header -->
+  <div class="page-header">
+    <button class="btn btn-secondary back-btn" (click)="onCancel()" id="btn-back-to-products">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Back to Inventory
+    </button>
+    <div class="header-titles">
+      <h1 class="page-title">Edit Product</h1>
+      <p class="page-subtitle" *ngIf="originalProduct">
+        Modifying specifications for <strong class="highlight-text">{{ originalProduct.name }}</strong> (ID: #{{ productId }})
+      </p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-box">
+    <div class="spinner"></div>
+    <p>Retrieving product data...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMessage" class="error-box glass-panel">
+    <div class="error-icon">⚠️</div>
+    <h3>Unable to Load Product</h3>
+    <p>{{ errorMessage }}</p>
+    <button class="btn btn-primary" (click)="onCancel()">Return to Products</button>
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage" class="content-split">
+    <!-- Reactive Form Section -->
+    <div class="form-card glass-panel">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Product Name -->
+        <div class="form-group">
+          <label class="form-label" for="edit-name">Product Name *</label>
+          <input
+            id="edit-name"
+            type="text"
+            class="form-control"
+            [class.is-invalid]="f['name'].touched && f['name'].invalid"
+            formControlName="name"
+            placeholder="Product name"
+          />
+          <div *ngIf="f['name'].touched && f['name'].invalid" class="invalid-feedback">
+            <span *ngIf="f['name'].errors?.['required']">Product name is required.</span>
+            <span *ngIf="f['name'].errors?.['minlength']">Name must be at least 3 characters.</span>
+          </div>
+        </div>
+
+        <!-- Row: Category & Price -->
+        <div class="form-row">
+          <div class="form-group col-half">
+            <label class="form-label" for="edit-category">Category *</label>
+            <select
+              id="edit-category"
+              class="form-control styled-select"
+              [class.is-invalid]="f['category'].touched && f['category'].invalid"
+              formControlName="category"
+            >
+              <option value="" disabled>Select a category</option>
+              <option *ngFor="let cat of availableCategories" [value]="cat">{{ cat }}</option>
+            </select>
+            <div class="category-chips">
+              <button
+                type="button"
+                *ngFor="let cat of availableCategories"
+                class="chip-btn"
+                [class.active]="productForm.get('category')?.value === cat"
+                (click)="selectCategory(cat)"
+              >
+                {{ cat }}
+              </button>
+            </div>
+            <div *ngIf="f['category'].touched && f['category'].invalid" class="invalid-feedback">
+              <span>Category selection is required.</span>
+            </div>
+          </div>
+
+          <div class="form-group col-half">
+            <label class="form-label" for="edit-price">Price ($ USD) *</label>
+            <input
+              id="edit-price"
+              type="number"
+              step="0.01"
+              class="form-control"
+              [class.is-invalid]="f['price'].touched && f['price'].invalid"
+              formControlName="price"
+              placeholder="0.00"
+            />
+            <div *ngIf="f['price'].touched && f['price'].invalid" class="invalid-feedback">
+              <span *ngIf="f['price'].errors?.['required']">Price is required.</span>
+              <span *ngIf="f['price'].errors?.['min']">Price must be greater than $0.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row: Stock & SKU -->
+        <div class="form-row">
+          <div class="form-group col-half">
+            <label class="form-label" for="edit-stock">Stock Units *</label>
+            <input
+              id="edit-stock"
+              type="number"
+              min="0"
+              class="form-control"
+              [class.is-invalid]="f['stock'].touched && f['stock'].invalid"
+              formControlName="stock"
+              placeholder="0"
+            />
+            <div *ngIf="f['stock'].touched && f['stock'].invalid" class="invalid-feedback">
+              <span *ngIf="f['stock'].errors?.['required']">Stock quantity is required.</span>
+              <span *ngIf="f['stock'].errors?.['min']">Stock cannot be negative.</span>
+            </div>
+          </div>
+
+          <div class="form-group col-half">
+            <label class="form-label" for="edit-sku">SKU Code</label>
+            <input
+              id="edit-sku"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="f['sku'].touched && f['sku'].invalid"
+              formControlName="sku"
+              placeholder="SKU"
+            />
+            <div *ngIf="f['sku'].touched && f['sku'].invalid" class="invalid-feedback">
+              <span>SKU must contain only letters, numbers, hyphens or underscores.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image URL -->
+        <div class="form-group">
+          <label class="form-label" for="edit-image">Image URL</label>
+          <input
+            id="edit-image"
+            type="url"
+            class="form-control"
+            formControlName="imageUrl"
+            placeholder="https://example.com/product-image.jpg"
+          />
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label class="form-label" for="edit-desc">Description *</label>
+          <textarea
+            id="edit-desc"
+            rows="4"
+            class="form-control text-area"
+            [class.is-invalid]="f['description'].touched && f['description'].invalid"
+            formControlName="description"
+            placeholder="Product details..."
+          ></textarea>
+          <div *ngIf="f['description'].touched && f['description'].invalid" class="invalid-feedback">
+            <span *ngIf="f['description'].errors?.['required']">Description is required.</span>
+            <span *ngIf="f['description'].errors?.['minlength']">Description must be at least 10 characters long.</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" id="btn-cancel-edit">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isSubmitting"
+            id="btn-submit-edit"
+          >
+            <span *ngIf="isSubmitting" class="spinner-sm"></span>
+            {{ isSubmitting ? 'Saving Changes...' : 'Save & Update Product' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Live Preview Aside -->
+    <div class="preview-column">
+      <div class="preview-header">
+        <span class="preview-badge">Live Edit Preview</span>
+      </div>
+
+      <div class="preview-card glass-panel">
+        <div class="preview-image-box">
+          <img [src]="currentImage" alt="Preview Image" class="preview-img" />
+          <span class="badge badge-primary preview-cat-badge">
+            {{ productForm.get('category')?.value || 'Category' }}
+          </span>
+          <span class="badge badge-success preview-stock-badge">
+            {{ productForm.get('stock')?.value || 0 }} in stock
+          </span>
+        </div>
+
+        <div class="preview-body">
+          <div class="preview-title-row">
+            <h4>{{ productForm.get('name')?.value || 'Product Title' }}</h4>
+            <span class="preview-price">
+              ${{ (productForm.get('price')?.value || 0) | number:'1.2-2' }}
+            </span>
+          </div>
+
+          <p class="preview-desc">
+            {{ productForm.get('description')?.value || 'Product description preview...' }}
+          </p>
+
+          <div class="preview-meta">
+            <span class="sku-tag">SKU: {{ productForm.get('sku')?.value || originalProduct?.sku || 'N/A' }}</span>
+            <span class="rating-tag">⭐ {{ originalProduct?.rating || 5.0 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
